@@ -1,0 +1,15 @@
+.Slider-wrapper {
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+
+  img {
+    object-fit: cover;
+  }
+}
+
+.slick-dots {
+  position: absolute;
+  bottom: 15px !important;
+}

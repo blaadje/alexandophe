@@ -8,6 +8,7 @@
     "prod": "webpack --config=webpack.config.js"
   },
   "devDependencies": {
+    "@types/react": "16.1.0",
     "babel": "^6.23.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.4",
@@ -21,6 +22,7 @@
     "eslint-plugin-promise": "^3.7.0",
     "eslint-plugin-react": "^7.7.0",
     "eslint-plugin-standard": "^3.0.1",
+    "file-loader": "^1.1.11",
     "node-sass": "^4.7.2",
     "sass-loader": "^6.0.7",
     "ts-loader": "^4.1.0",
@@ -29,9 +31,13 @@
     "webpack-cli": "^2.0.12"
   },
   "dependencies": {
+    "css-loader": "^0.28.11",
     "eslint": "^4.19.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-slick": "^0.22.3",
+    "slick-carousel": "^1.8.1",
+    "style-loader": "^0.20.3",
     "webpack-dev-server": "^3.1.1"
   }
 }

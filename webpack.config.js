@@ -7,6 +7,15 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.(png|jpg|gif|svg|ttf|eot|svg|woff)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {}
+          }
+        ]
+      },
+      {
         enforce: "pre",
         test: /\.js$/,
         exclude: /node_modules/,
@@ -25,7 +34,14 @@ module.exports = {
         loader: "ts-loader",
         exclude: /node_modules/
       },
-      { test: /\.scss$/, loader: "sass-loader" }
+      {
+        test: /\.scss$/,
+        use: [
+          { loader: "style-loader" }, 
+          { loader: "css-loader" },
+          { loader: "sass-loader" }
+        ]
+      }
     ]
   },
   output: {
