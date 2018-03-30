@@ -1,7 +1,10 @@
 import * as React from 'react'
 
-export default class Home extends React.Component {
+interface State { }
+interface Props { }
+
+export default class Home extends React.Component<Props, State> {
   render () {
-    return <p>Mon application React</p>
+    return <>Mon application</>
   }
 }
