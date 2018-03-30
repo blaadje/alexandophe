@@ -1,0 +1,33 @@
+.Content {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  z-index: 2;
+  text-align: center;
+
+  p {
+    margin: 0;
+    color: white;
+    font-size: 5em;
+  }
+
+  .heart {
+    font-size: 5em;
+    display: block;
+    color: white;
+    animation: beating 1s infinite ease;
+    transform-origin: center;
+
+    @keyframes beating {
+      0% {
+        transform: scale(.9)
+      }
+      50% {
+        transform: scale(1)
+      }
+      100% {
+        transform: scale(.9)
+      }
+    }
+  }
+}

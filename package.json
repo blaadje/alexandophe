@@ -33,6 +33,7 @@
   "dependencies": {
     "css-loader": "^0.28.11",
     "eslint": "^4.19.0",
+    "moment": "^2.21.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-slick": "^0.22.3",
