@@ -33,7 +33,7 @@ export default class Slider extends React.Component<SliderProps, State> {
           <Slick {...settings}>
             {
               this.props.images.map((item: string, i) => {
-                return <div key={i}><img src={item} alt="" /></div>
+                return <div key={i}><img src={require(`../../${item}`)} alt="" /></div>
               })
             }
           </Slick>
