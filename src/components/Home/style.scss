@@ -1,3 +1,53 @@
+.Loader {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  background: #191920;
+  top: 0px;
+  left: 0px;
+
+  &:after {
+    content: 'A&O';
+    font-size: 4em;
+    color: white;
+    background: rgba(white, 0.05);
+    text-align: center;
+    border: 1px solid white;
+    box-shadow: 0px 0px 21px 1px rgba(0, 0, 0, 0.3);
+    padding: .5em .3em .3em .3em;
+    position: absolute;
+    top: 50%; left: 50%;
+    animation: bouncing 5s infinite ease;
+    transform-style: preserve-3d;
+
+    @keyframes bouncing {
+      0% {
+        transform: translateX(-50%) translateY(-50%) rotateY(0);
+      }
+      50% {
+        transform: translateX(-50%) translateY(-50%) rotateY(360deg);
+      }
+      100% {
+        transform: translateX(-50%) translateY(-50%) rotateY(0);
+      }
+    }
+
+  }
+}
+.message-exit {
+  opacity: 1;
+}
+
+.message-exit-active {
+  opacity: 0;
+  transition: all 1s linear;
+}
+
+.message-exit-done {
+  opacity: 0;
+}
+
 .Content {
   position: absolute;
   top: 50%; left: 50%;
@@ -14,7 +64,7 @@
   .heart {
     font-size: 5em;
     display: block;
-    color: white;
+    color: rgba(red, 0.8);
     animation: beating 1s infinite ease;
     transform-origin: center;
 

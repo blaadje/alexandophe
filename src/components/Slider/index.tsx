@@ -6,7 +6,8 @@ import './style.scss'
 
 interface State { }
 interface SliderProps {
-  images: Array<string>
+  images: Array<string>,
+  loaded: () => void
 }
 
 export default class Slider extends React.Component<SliderProps, State> {
@@ -30,10 +31,17 @@ export default class Slider extends React.Component<SliderProps, State> {
     return (
       <>
         <div className='Slider-wrapper'>
+          
           <Slick {...settings}>
             {
               this.props.images.map((item: string, i) => {
-                return <div key={i}><img src={require(`../../${item}`)} alt="" /></div>
+                return (
+                  <div key={i}>
+                    <img 
+                      onLoad={() => setTimeout(() => this.props.loaded(), 2000)}
+                      src={require(`../../${item}`)} alt="" />
+                  </div>
+                )
               })
             }
           </Slick>
