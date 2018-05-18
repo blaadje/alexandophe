@@ -1,13 +1,17 @@
+const path = require('path')
 const port = process.env.PORT || 8080
 
 module.exports = {
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.json'],
+    alias: {
+      assets: path.resolve(__dirname, 'src/assets/')
+    }
   },
   module: {
     rules: [
       {
-        test: /\.(png|jpg|jpeg|gif|svg|ttf|eot|svg|woff)$/,
+        test: /\.(png|jpg|jpeg|gif|svg|ttf|eot|svg|mp3|woff)$/,
         use: [
           {
             loader: 'file-loader',

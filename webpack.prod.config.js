@@ -1,13 +1,17 @@
+const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.json'],
+    alias: {
+      assets: path.resolve(__dirname, 'src/assets/')
+    }
   },
   module: {
     rules: [
       {
-        test: /\.(png|jpe?g|gif|svg|ttf|eot|svg|woff)$/,
+        test: /\.(png|jpe?g|gif|svg|ttf|eot|mp3|svg|woff)$/,
         use: [
           {
             loader: 'file-loader',

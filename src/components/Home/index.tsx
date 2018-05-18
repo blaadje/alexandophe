@@ -3,7 +3,9 @@ import * as React from 'react'
 import Slider from '../Slider'
 import Counter from '../Counter'
 
-import { CSSTransition } from 'react-transition-group'
+const song = require('assets/song.mp3')
+
+import { CSSTransition }  from 'react-transition-group'
 
 import './style.scss'
 
@@ -22,7 +24,11 @@ export default class Home extends React.Component<Props, State> {
  
   render () {
     return (
-      <>
+      <div>
+        <audio autoPlay loop>
+          <source src={song} type="audio/mpeg" />
+        </audio>
+
         <CSSTransition
           in={!this.state.loaded}
           timeout={300}
@@ -40,15 +46,15 @@ export default class Home extends React.Component<Props, State> {
         <Slider 
           loaded={() => this.setState({ loaded: true })}
           images={[ 
-            'assets/image0.jpeg',
             'assets/image1.jpeg',
+            'assets/image2.jpeg',
             'assets/image3.jpeg',
             'assets/image4.jpeg',
-            'assets/image5.jpeg',
+            'assets/image5.jpg',
             'assets/image6.jpeg'
           ]}
          />
-      </>
+      </div>
     )
   }
 }

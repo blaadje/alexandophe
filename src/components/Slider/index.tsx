@@ -20,9 +20,10 @@ export default class Slider extends React.Component<SliderProps, State> {
       dots: true,
       infinite: true,
       speed: 2000,
-      fade: true,
+      fade: false,
+      easing: 'ease',
       autoplay: true,
-      autoplaySpeed: 7000,
+      autoplaySpeed: 3500,
       adaptativeHeight: false,
       slidesToShow: 1,
       slidesToScroll: 1
