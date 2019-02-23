@@ -1,13 +1,13 @@
 import * as React from 'react'
 
-import Slick from 'react-slick'
+import { Carousel } from 'react-responsive-carousel'
+import 'react-responsive-carousel/lib/styles/carousel.min.css'
 
 import './style.scss'
 
 interface State { }
 interface SliderProps {
-  images: Array<string>,
-  loaded: () => void
+  images: Array<string>
 }
 
 export default class Slider extends React.Component<SliderProps, State> {
@@ -15,40 +15,33 @@ export default class Slider extends React.Component<SliderProps, State> {
     super(props)
   }
 
-  public render() {
-    const settings = {
-      dots: true,
-      infinite: true,
-      speed: 2000,
-      fade: false,
-      easing: 'ease',
-      autoplay: true,
-      autoplaySpeed: 3500,
-      adaptativeHeight: false,
-      slidesToShow: 1,
-      slidesToScroll: 1
-    }
-
+  public render () {
     return (
-      <>
-        <div className='Slider-wrapper'>
-          
-          <Slick {...settings}>
-            {
-              this.props.images.map((item: string, i) => {
-                return (
-                  <div key={i}>
-                    <img 
-                      onLoad={() => setTimeout(() => this.props.loaded(), 2000)}
-                      src={require(`../../${item}`)} alt="" />
-                  </div>
-                )
-              })
-            }
-          </Slick>
-        </div>
-        <div className='Slider-filter'/>
-      </>
+      <div className='Slider-wrapper'>
+        <Carousel
+          showThumbs={false}
+          showArrows={false}
+          showIndicators={false}
+          autoPlay={true}
+          interval={6000}
+          transitionTime={1000}
+        >
+          {
+            this.props.images.map((item: string) => {
+              return (
+                <div key={item}>
+                  <img 
+                    className="Slider-image"
+                    onLoad={() => console.log('image loadded')}
+                    src={item}
+                    alt=""
+                  />
+                </div>
+              )
+            })
+          }
+        </Carousel>
+      </div>
     )
   }
 }

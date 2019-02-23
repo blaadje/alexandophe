@@ -10,50 +10,113 @@ import { CSSTransition }  from 'react-transition-group'
 import './style.scss'
 
 interface State {
-  loaded: Boolean
+  loading: boolean
+  images: any[]
+  folder: string
+  failedSong: boolean
+  audio: HTMLAudioElement | null
 }
-interface Props { }
 
-export default class Home extends React.Component<Props, State> {
-  constructor (props: Props, state: State) {
+export default class Home extends React.Component<{}, State> {
+  constructor (props) {
     super(props)
     this.state = {
-      loaded: false
+      loading: true,
+      images: [],
+      folder: '/Appareil photo/alex et ophé/Fun',
+      failedSong: false,
+      audio: null
     }
+  }
+
+  async componentWillMount () {
+    const links = await this.getLinks(this.state.folder)
+    const imagesLinks = links.filter(item => !item.includes('.mp4'))
+    const images = await Promise.all(imagesLinks.map(link => this.createSharedImageLinks(link)))
+
+    this.setState({ images })
+
+    await new Promise(resolve => setTimeout(() => resolve(), 1000))
+
+    this.setState({ loading: false })
+  }
+
+  async componentDidMount () {
+    await this.setState({ audio: new Audio(song) })
+    this.state.audio.play().catch(() => this.setState({ failedSong: true }))
+  }
+
+  async request (url, args) {
+    const response = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify({ ...args }),
+      headers: {
+        "Authorization": "Bearer lZd-kJlTGAAAAAAAAAAMUOIxFQQxx5iL5plzcKieYr8w_7CNUJzMiDUkbKPlorQ6",
+        "Content-Type": "application/json",
+      }
+    })
+    const datas = await response.json()
+
+    return datas
+  }
+
+  async getLinks (path) {
+    const { entries } = await this.request('https://api.dropboxapi.com/2/files/list_folder', { path })
+
+    return entries.map(item => item.path_lower)
+  }
+
+  async createSharedImageLinks (path) {
+    const format = url => {
+      const splittedUrl = url.split('/')
+      splittedUrl[2] = 'dl.dropboxusercontent.com'
+
+      return splittedUrl.join('/')
+    }
+
+    const { url } = await this.request('https://api.dropboxapi.com/2/sharing/create_shared_link', { path })
+
+    return format(url)
   }
  
   render () {
     return (
       <div>
-        <audio autoPlay loop>
-          <source src={song} type="audio/mpeg" />
-        </audio>
+        {this.state.failedSong &&
+          <button
+            className='Song-button'
+            onClick={() => {
+              this.state.audio.play()
+              this.setState({ failedSong: false })
+            }}
+          >
+            Play Song
+          </button>
+        }
+        <div className='Background-Wrapper'>
+          <div className='Filter' />
+          <CSSTransition
+            in={this.state.loading}
+            timeout={500000}
+            classNames="message"
+          >
+            <div className='Loader' />
+          </CSSTransition>
 
-        <CSSTransition
-          in={!this.state.loaded}
-          timeout={300}
-          classNames="message"
-        >
-          <div className='Loader' />
-        </CSSTransition>
-
-        <div className='Content'>
-          <p>Ophélie and Alexandre are together for</p>
-          <Counter />
-          <i className='heart'>♥</i>
+          <div className='Content'>
+            <p>Happy Birthday !!!</p>
+            <p>Ophélie and Alexandre are together for</p>
+            <Counter />
+            <div className='heart-Wrapper'>
+              <i className='heart'>♥</i>
+              <i className='heart'>♥</i>
+              <i className='heart'>♥</i>
+            </div>
+          </div>
+          {this.state.images.length &&
+            <Slider images={this.state.images} />
+          }
         </div>
-        
-        <Slider 
-          loaded={() => this.setState({ loaded: true })}
-          images={[ 
-            'assets/image1.jpeg',
-            'assets/image2.jpeg',
-            'assets/image3.jpeg',
-            'assets/image4.jpeg',
-            'assets/image5.jpg',
-            'assets/image6.jpeg'
-          ]}
-         />
       </div>
     )
   }
