@@ -1,4 +1,4 @@
-$base-color: #97D2FB;
+$base-color: #2d2342;
 $primary-color: rgba($base-color, 0);
 $secondary-color: rgba($base-color, 0.3);
 $ternary-color: rgba($base-color, 0.5);
@@ -8,7 +8,7 @@ $fourth-color: rgba($base-color, 0.8);
   position: absolute;
   width: 100vw;
   height: 100vh;
-  z-index: 5;
+  z-index: 7;
   background: $base-color;
   top: 0px;
   left: 0px;
@@ -65,6 +65,15 @@ $fourth-color: rgba($base-color, 0.8);
   position: relative;
 }
 
+.Date {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 5;
+  color: white;
+  font-size: 1.4rem;
+}
+
 .Filter {
   background: -moz-radial-gradient(center, ellipse cover, $primary-color 0%, $secondary-color 33%, $ternary-color 66%, $fourth-color 100%);
   background: -webkit-radial-gradient(center, ellipse cover, $primary-color 0%, $secondary-color 33%, $ternary-color 66%, $fourth-color 100%);
@@ -97,7 +106,7 @@ $fourth-color: rgba($base-color, 0.8);
   position: absolute;
   top: 50%; left: 50%;
   transform: translateX(-50%) translateY(-50%);
-  z-index: 4;
+  z-index: 6;
   text-align: center;
 
   p {

@@ -12,8 +12,12 @@ import './style.scss'
 interface State {
   loading: boolean
   images: any[]
+  imagesLinks: any[]
   folder: string
   failedSong: boolean
+  end: number
+  start: number
+  pageSize: number
   audio: HTMLAudioElement | null
 }
 
@@ -23,22 +27,20 @@ export default class Home extends React.Component<{}, State> {
     this.state = {
       loading: true,
       images: [],
-      folder: '/Appareil photo/alex et ophé/Fun',
+      imagesLinks: [],
+      folder: '/Appareil photo/alex et ophé/Musée d\'histoires naturelles',
       failedSong: false,
-      audio: null
+      audio: null,
+      pageSize: 20,
+      start: 0,
+      end: 20
     }
   }
 
   async componentWillMount () {
     const links = await this.getLinks(this.state.folder)
-    const imagesLinks = links.filter(item => !item.includes('.mp4'))
-    const images = await Promise.all(imagesLinks.map(link => this.createSharedImageLinks(link)))
-
-    this.setState({ images })
-
-    await new Promise(resolve => setTimeout(() => resolve(), 1000))
-
-    this.setState({ loading: false })
+    this.setState({ imagesLinks: links.filter(item => !item.includes('.mp4')) })
+    this.createShareImageLinks(this.state.start, this.state.end)
   }
 
   async componentDidMount () {
@@ -46,9 +48,22 @@ export default class Home extends React.Component<{}, State> {
     this.state.audio.play().catch(() => this.setState({ failedSong: true }))
   }
 
+  createShareImageLinks (start, end) {
+    const slicedImagesLinks = this.state.imagesLinks.slice(start, end)
+
+    this.fetchSharedImageLinks(slicedImagesLinks)
+  }
+
+  fetchSharedImageLinks (array) {
+    array.map(async link => {
+      const sharedImageLink = await this.fetchSharedImageLink(link)
+      this.setState(prevState => ({ images: [...prevState.images, sharedImageLink] }))
+    })
+  }
+
   async request (url, args) {
     const response = await fetch(url, {
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify({ ...args }),
       headers: {
         "Authorization": "Bearer lZd-kJlTGAAAAAAAAAAMUOIxFQQxx5iL5plzcKieYr8w_7CNUJzMiDUkbKPlorQ6",
@@ -66,7 +81,8 @@ export default class Home extends React.Component<{}, State> {
     return entries.map(item => item.path_lower)
   }
 
-  async createSharedImageLinks (path) {
+  async fetchSharedImageLink (path) {
+    const { url } = await this.request('https://api.dropboxapi.com/2/sharing/create_shared_link', { path })
     const format = url => {
       const splittedUrl = url.split('/')
       splittedUrl[2] = 'dl.dropboxusercontent.com'
@@ -74,9 +90,19 @@ export default class Home extends React.Component<{}, State> {
       return splittedUrl.join('/')
     }
 
-    const { url } = await this.request('https://api.dropboxapi.com/2/sharing/create_shared_link', { path })
-
     return format(url)
+  }
+
+  incrementPage () {
+    this.setState({ 
+      start: this.state.start + this.state.pageSize,
+      end: this.state.end + this.state.pageSize
+    })
+  }
+
+  fetchMore () {
+    this.incrementPage()
+    this.createShareImageLinks(this.state.start, this.state.end)
   }
  
   render () {
@@ -114,8 +140,13 @@ export default class Home extends React.Component<{}, State> {
             </div>
           </div>
           {this.state.images.length &&
-            <Slider images={this.state.images} />
+            <Slider
+              images={this.state.images}
+              onChange={() => this.fetchMore()}
+              loaded={() => this.setState({ loading: false })}
+            />
           }
+          <span className="Date">Vendredi 23 Février 2018</span>
         </div>
       </div>
     )

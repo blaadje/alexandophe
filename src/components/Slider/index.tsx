@@ -5,14 +5,29 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css'
 
 import './style.scss'
 
-interface State { }
+interface State { 
+  index: number
+  delay: number
+  changeIndex: number
+}
 interface SliderProps {
   images: Array<string>
+  onChange: () => void
+  loaded: () => void
 }
 
 export default class Slider extends React.Component<SliderProps, State> {
   constructor(props: SliderProps) {
     super(props)
+    this.state = {
+      index: 1,
+      changeIndex: 1,
+      delay: 7000
+    }
+  }
+
+  componentDidMount () {
+    setInterval(() => this.setState({ index: this.state.index + 1 }), this.state.delay)
   }
 
   public render () {
@@ -21,18 +36,29 @@ export default class Slider extends React.Component<SliderProps, State> {
         <Carousel
           showThumbs={false}
           showArrows={false}
+          selectedItem={this.state.index}
           showIndicators={false}
+          onChange={() => {
+            this.setState({ changeIndex: this.state.changeIndex + 1 })
+            if (this.state.changeIndex === 10) {
+              this.props.onChange()
+              this.setState({ changeIndex: 0 })
+            }
+          }}
           autoPlay={true}
-          interval={6000}
-          transitionTime={1000}
+          transitionTime={700}
         >
           {
-            this.props.images.map((item: string) => {
+            this.props.images.map((item: string, index) => {
               return (
                 <div key={item}>
                   <img 
                     className="Slider-image"
-                    onLoad={() => console.log('image loadded')}
+                    onLoad={() => {
+                      if(index === 0) {
+                        this.props.loaded()
+                      }
+                    }}
                     src={item}
                     alt=""
                   />
