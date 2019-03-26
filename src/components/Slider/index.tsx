@@ -59,7 +59,7 @@ export default class Slider extends React.Component<SliderProps, State> {
                         this.props.loaded()
                       }
                     }}
-                    src={item}
+                    src={`https://img.imageboss.me/width/1920/quality:60/${item}`}
                     alt=""
                   />
                 </div>
